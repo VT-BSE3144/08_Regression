@@ -1,0 +1,33 @@
+---
+title: "Regression Assignment"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Assignment
+
+## Part 1. 
+Create a short 1-page cheatsheet for linear regression.
+
+## Part 2. 
+In Biotechnology, we think alot about kinetics and reactors. The concentration of bacteria in a batch reactor is monitored after adding an inhibitor.
+
+time [hours] <- 4 8 12 16 20 24
+cbacteria [CFU] <- 1600 1320 1000 890 650 560
+
+where CFU is in units of colony forming units. Fit a model to the data, and describe how the resulting model meets the tests (see tutorial video). Estimate the concentration at the beginning (time = 0) and the time when cbacteria reaches 200 CFU.
+Your choice of model must  not include negative concentrations (impossible) and concentration always decreases with time.
+
+## Part 3
+In Watershed Science, we often need to design the size of BMPs and reservoirs on incoming streamflow. When long-term streamflow is not available, one might use long-term precipitation to estimate streamflow. Suppose we have the following data:
+
+Precip [cm/yr] <- 88.9 108.5 104.1 139.7 127 94 116.8 99.1
+Streamflow [m^3/s] <- 14.6 16.7 15.3 23.2 19.5 16.1 18.1 16.6
+
+Fit a linear regression to the data using the workflow approach, and describe how the resulting model meets the tests. Estimate streamflow for a precipitation value of 120 cm, including uncertainty.
