@@ -1,0 +1,6 @@
+---
+title: "Intro to Linear Regression in-class examples"
+author: "Clay Wright"
+format: html
+---
+

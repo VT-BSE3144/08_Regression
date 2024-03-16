@@ -2,7 +2,7 @@
 title: "WW-2 Problem Set"
 author: 
 date: '`r Sys.Date()`'
-output: pdf_document
+format: pdf
 ---
 
 ```{r setup, include=FALSE}
@@ -16,4 +16,3 @@ Complete the following, replacing the *italic* text. Knit this document to a pdf
 Question
  
 *answer here*
-
