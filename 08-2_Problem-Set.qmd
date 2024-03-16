@@ -11,8 +11,54 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Complete the following, replacing the *italic* text. Knit this document to a pdf, **double check the pdf document for errors**, and submit this to this week's Problem Set assignment on Canvas. 
 
-## Problem 1 - Title
+## Part 1. 
 
-Question
- 
-*answer here*
+Create a short <1-page cheatsheet for mathematical modeling and linear regression in R.
+
+## Part 2. 
+In Biotechnology, we think a lot about the rate at which cells grow, how to predict when cells will slow down and stop growing, how to maximize growth rate and total growth, and sometimes how to prevent cell growth, particularly contaminating cells or cells that don't produce the desired product.
+
+The concentration of bacteria in a batch reactor liquid culture is monitored after adding an inhibitor, yielding the following data:
+
+time [hours] <- 4 8 12 16 20 24
+c_bacteria [CFU/mL] <- 1600 1320 1000 890 650 560
+
+where "CFU" is  colony forming units, or how many colonies grow on a petri dish when putting a known volume of culture on the solid agar media in the petri dish. Each colony grows from a single viable (alive) cell. 
+
+A. Fit a linear model to the data, and describe how the resulting model meets the tests.
+
+```{r}
+
+```
+
+B. Estimate the concentration at the beginning (time = 0) and the time when cbacteria reaches 200 CFU. 
+
+```{r}
+
+```
+
+C. Find a transformation model that fits the data better. You model should not include negative concentrations (impossible) and concentration should always decrease with time (what sort of functions look like this that you can use to transform the data?).
+
+```{r}
+
+```
+
+
+## Part 3
+In Watershed Science, we often need to design the size of BMPs and reservoirs on incoming streamflow. When long-term streamflow is not available, one might use long-term precipitation to estimate streamflow. Suppose we have the following data:
+
+Precip [cm/yr] <- 88.9 108.5 104.1 139.7 127 94 116.8 99.1
+Streamflow [m^3/s] <- 14.6 16.7 15.3 23.2 19.5 16.1 18.1 16.6
+
+Fit a linear regression model to the data using the workflow approach, and describe how the resulting model meets the tests of the assumptions of linear regression. 
+
+```{r}
+
+```
+
+Estimate streamflow for a precipitation value of 120 cm and the uncertainty in this prediction.
+
+```{r}
+
+```
+
