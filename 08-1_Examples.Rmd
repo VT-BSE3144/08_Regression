@@ -1,26 +1,25 @@
 ---
-title: "Intro to Linear Regression in-class examples"
-author: "Clay Wright and Durelle Scott"
-format: 
-  html:
-    toc: true
-    toc-depth: 5
+output: html_document
+params:
+  version: 1.1
 ---
+
+# Linear Regression Examples
 
 This tutorial is derived from https://www.datacamp.com/community/tutorials/linear-regression-R
 
-# Active Libraries
+## Active Libraries
 ```{r}
 library(ggplot2)
 library(cowplot)
 library(readxl)
 ```
 
-# Linear Regression
+## Linear Regression
 
 R-studio provides the ability to create linear regressions easily, sometimes too easily. While this is not meant to be a substitute for a statistics course, the objective in this short tutorial is to develop a workflow approach that allows you to test the validity of regressions.
 
-# Assumptions
+## Assumptions
 
 Below is a figure from https://pubs.usgs.gov/tm/04/a03/tm4a3.pdf. 
 
@@ -29,7 +28,7 @@ Below is a figure from https://pubs.usgs.gov/tm/04/a03/tm4a3.pdf.
 
 
 
-### Workflow:
+#### Workflow:
 
 1. Read in data
 2. Plot data & visualize linearity
@@ -42,17 +41,17 @@ Below is a figure from https://pubs.usgs.gov/tm/04/a03/tm4a3.pdf.
 6. Test for bias * Assess assumption 4, e values generally plot equally above and below zero
 7. Test for normality 
 
-# Example
-## Step 1. Read in data
+## Example
+### Step 1. Read in data
 ```{r step 1}
 S <- c(1.3, 1.8, 3, 4.5, 6, 8, 9)
 v <- c(.07, .13, .22, .275, .335, .35, .36)
 data.ex <- data.frame(S,v)
 ```
 
-## Step 2. Plot data & visualize linearity
+### Step 2. Plot data & visualize linearity
 ```{r step 2}
-# here you can either start a ggplot or just use the simple plot command. Since we're practicing ggplot, let's stick with this.
+## here you can either start a ggplot or just use the simple plot command. Since we're practicing ggplot, let's stick with this.
 p <- ggplot(data.ex, aes(S,v)) + geom_point() + 
   cowplot::theme_cowplot() + # adds theme
   scale_y_continuous(breaks=seq(0,0.8,.2)) + # changes scale to min and max with prescribed spacing
@@ -66,14 +65,15 @@ p
 
 
 
-## Step 3. Transform data
+### Step 3. Transform data
 ```{r step 3}
 data.ex$vt <- 1/data.ex$v
 data.ex$St <- 1/data.ex$S
+# TODO remove 2nd order here and add actual Michaelis-menten equation and actual linearization examples
 data.ex$S2t <- 1/data.ex$S^2
 ```
 
-## Step 4. Linear model
+### Step 4. Linear model
 
 Create linear model using lm function. * Assess assumption 1
  - review t-values from linear model summary. If the slope and intercept values have resulting |t| > 2, then they are significant.
@@ -107,7 +107,7 @@ subset(dffits(model.lm), dffits(model.lm) > 2 * sqrt(p / n)) # determines if the
 For SLR with more than about 30 observations, the critical value for Di would be about 2.4. 
 In the example above, observation 1 was identified as having higher influence for both Cooks and DDFITS. Consider options 1-3 described in workflow, but also intercept was questionable.
 
-## Step 5. Test for homoscedasaticity
+### Step 5. Test for homoscedasaticity
 ```{r step 5}
 # Here, the which variable provides the ability to create 4 plots of interest: "Residuals vs Fitted", "Normal Q-Q", "Scale-Location", "Cook's distance", "Residuals vs Leverage"
 
@@ -118,21 +118,21 @@ plot(model.lm,  which = 3, ask = FALSE)
 **Check**: Variability is a bit more variable.
 
 
-## Step 6. Test for bias
+### Step 6. Test for bias
 ```{r step 6}
 # To test for bias, review plot of  residuals
 plot(model.lm,  which = 1, ask = FALSE)
 ```
 **Check**: Variability above and below 0 does not appear random.
 
-## Step 7. Test for Normality
+### Step 7. Test for Normality
 ```{r step 7}
 # To test for normality, review plot
 plot(model.lm,  which = 2, ask = FALSE)
 ```
 **Check**: Residuals are not normally distributed. Questionable!!
 
-## Application
+### Application
 
 The workflow provides confidence of a reasonable linear regression model. The final steps are to create a plot with uncertainity bounds and the ability to predict a value and associated uncertainity.
 
@@ -203,10 +203,10 @@ p
 ```  
 
 
-# Take 2, try second order!
+## Take 2, try second order!
 
 
-## Step 4. Linear model
+### Step 4. Linear model
 
 Create linear model using lm function. * Assess assumption 1
  - review t-values from linear model summary. If the slope and intercept values have resulting |t| > 2, then they are significant.
@@ -240,7 +240,7 @@ subset(dffits(model.lm), dffits(model.lm) > 2 * sqrt(p / n)) # determines if the
 For SLR with more than about 30 observations, the critical value for Di would be about 2.4. 
 In the example above, observation 1 was identified as having higher influence for both Cooks and DDFITS. Consider options 1-3 described in workflow, but also intercept was questionable.
 
-## Step 5. Test for homoscedasaticity
+### Step 5. Test for homoscedasaticity
 ```{r step 52}
 # Here, the which variable provides the ability to create 4 plots of interest: "Residuals vs Fitted", "Normal Q-Q", "Scale-Location", "Cook's distance", "Residuals vs Leverage"
 
@@ -250,21 +250,21 @@ plot(model.lm,  which = 3, ask = FALSE)
 ```
 **Check**: Variability is variable.
 
-## Step 6. Test for bias
+### Step 6. Test for bias
 ```{r step 62}
 # To test for bias, review plot of  residuals
 plot(model.lm,  which = 1, ask = FALSE)
 ```
 **Check**: Variability above and below 0 somewhat random.
 
-## Step 7. Test for Normality
+### Step 7. Test for Normality
 ```{r step 72}
 # To test for normality, review plot
 plot(model.lm,  which = 2, ask = FALSE)
 ```
 **Check**: Residuals are not normally distributed. Questionable.
 
-## Application
+### Application
 
 The workflow provides confidence of a reasonable linear regression model. The final steps are to create a plot with uncertainity bounds and the ability to predict a value and associated uncertainity.
 

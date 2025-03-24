@@ -1,17 +1,16 @@
 ---
-title: "Introduction to Linear Regression in R"
-author: "Clay Wright and Durelle Scott"
-format: 
-  html:
-    toc: true
-    toc-depth: 5
+output: html_document
+params:
+  version: 1.1
 ---
+
+# Introduction to Linear Regression in R
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Objectives
+## Objectives
 
 This week our goals are to be able to:
 
@@ -42,11 +41,11 @@ This week our goals are to be able to:
 
 
 
-# Reading
+## Reading
 
 - [Chapter 3 A Review of R Modeling Fundamentals](https://www.tmwr.org/base-r) from *Tidy Modeling with R* by Max Kuhn and Julia Silge
 
-# Active Package Libraries
+## Active Package Libraries
 
 This tutorial is derive from https://www.datacamp.com/community/tutorials/linear-regression-R
 
@@ -56,17 +55,17 @@ library(cowplot)
 library(readxl)
 ```
 
-# Linear Regression
+## Linear Regression
 
 R-studio provides the ability to create linear regressions easily, sometimes too easily. While this is not meant to be a substitute for a statistics course, the objective in this short tutorial is to develop a workflow approach that allows you to test the validity of regressions.
 
-## Assumptions
+### Assumptions
 
 Below is a figure from <https://pubs.usgs.gov/tm/04/a03/tm4a3.pdf>.
 
 ![alt text here](images/image_assumptions.png)
 
-## Workflow:
+### Workflow:
 
 1.  Read in data
 2.  Plot data & visualize linearity
@@ -88,39 +87,39 @@ Below is a figure from <https://pubs.usgs.gov/tm/04/a03/tm4a3.pdf>.
 
 7.  Test for normality
 
-## Example
+### Example
 
-### Step 1. Read in data
+#### Step 1. Read in data
 
 ```{r step 1}
 ageandheight <- read_excel("data/ageandheight.xls",sheet="Hoja2")
 
-# There is one data point that does not read in correctly, thus the statement below corrects for this.
+## There is one data point that does not read in correctly, thus the statement below corrects for this.
 ageandheight$height[7] <- 79.9
 ```
 
-### Step 2. Plot data & visualize linearity
+#### Step 2. Plot data & visualize linearity
 
 ```{r step 2}
-# here you can either start a ggplot or just use the simple plot command. Since we're practicing ggplot, let's stick with this.
+## here you can either start a ggplot or just use the simple plot command. Since we're practicing ggplot, let's stick with this.
 p <- ggplot(ageandheight, aes(age,height)) + geom_point() + 
-  cowplot::theme_cowplot() + # adds theme
-  scale_y_continuous(breaks=seq(76,84,2)) + # changes scale to min and max with prescribed spacing
+  cowplot::theme_cowplot() + ## adds theme
+  scale_y_continuous(breaks=seq(76,84,2)) + ## changes scale to min and max with prescribed spacing
   scale_x_continuous(breaks=seq(16,31,2)) + 
-  ylab("Height [cm]") + # adds y-label with units
+  ylab("Height [cm]") + ## adds y-label with units
   xlab("Age [months]")
 p
 ```
 
 **Check**: The resulting plot looks fairly linear; let's proceed!
 
-### Step 3. Transform data
+#### Step 3. Transform data
 
 ```{r step 3}
-# not required here; if required, repeat step 2.
+## not required here; if required, repeat step 2.
 ```
 
-### Step 4. Linear model
+#### Step 4. Linear model
 
 Create linear model using the `lm` function. 
 -   Assess assumption 1 
@@ -131,7 +130,7 @@ Create linear model using the `lm` function.
         (3) The data point is perfectly valid, in which case the model cannot account for the behavior
 
 ```{r step 4}
-# Create linear model
+## Create linear model
 model.lm <- lm(height~age, data=ageandheight)
 summary(model.lm)
 
@@ -140,7 +139,7 @@ summary(model.lm)
 **Check**: \|t-values\| \>\> 2, proceed
 
 ```{r step 4b}
-# review leverage/influence of data points on regression. Use plot of Cook's D, evaluate subset of Cooks D above threshold, and evaluate DFFITS (another influence diagnostic)
+## review leverage/influence of data points on regression. Use plot of Cook's D, evaluate subset of Cooks D above threshold, and evaluate DFFITS (another influence diagnostic)
 
 plot(cooks.distance(model.lm), pch = 16, col = "blue") #Plot the Cooks Distances.
 ```
@@ -148,7 +147,7 @@ plot(cooks.distance(model.lm), pch = 16, col = "blue") #Plot the Cooks Distances
 There are a few high points here at the beginning. Let's see if any fall outside of the critical value on the F-distribution (the `qf` function determines the critical value for our number of observations and number of coefficients).  
 
 ```{r}
-n <- length(model.lm$residuals) # n = the number of observations
+n <- length(model.lm$residuals) ## n = the number of observations
 p <- length(model.lm$coefficients) # p = the number of coefficients
 subset(cooks.distance(model.lm), cooks.distance(model.lm) > qf(0.1, p, n - p, lower.tail = FALSE)) # determines if there are any flagged observations from Cooks D
 ```
@@ -163,7 +162,7 @@ subset(dffits(model.lm), dffits(model.lm) > 2 * sqrt(p / n)) # determines if the
 
 Now, observation 3 was identified as having higher influence on the fit than other points. Consider options 1-3 described in workflow. Is there something wrong with this point?
 
-### Step 5. Test for homoscedasaticity
+#### Step 5. Test for homoscedasaticity
 
 ```{r step 5}
 # Here, the which variable provides the ability to create 4 plots of interest: "Residuals vs Fitted", "Normal Q-Q", "Scale-Location", "Cook's distance", "Residuals vs Leverage"
@@ -175,7 +174,7 @@ plot(model.lm,  which = 3, ask = FALSE)
 
 **Check**: Variability is not significant over fitted values
 
-### Step 6. Test for bias
+#### Step 6. Test for bias
 
 ```{r step 6}
 # To test for bias, review plot of  residuals
@@ -184,7 +183,7 @@ plot(model.lm,  which = 1, ask = FALSE)
 
 **Check**: Variability above and below 0 is similar without a distinct pattern
 
-### Step 7. Test for Normality
+#### Step 7. Test for Normality
 
 ```{r step 7}
 # To test for normality, review plot
@@ -193,11 +192,11 @@ plot(model.lm,  which = 2, ask = FALSE)
 
 **Check**: Most points (with exception of observation 1) fall on the line, suggesting a normal distribution of residuals
 
-## Predicting values: Applications of linear models
+### Predicting values: Applications of linear models
 
 The following workflow provides predicted values and confidence intervals of these estimates for new values based on a linear regression model. The final steps are to create a plot with uncertainty bounds and the ability to predict a value and associated uncertainty in that predicted value.
 
-### Workflow:
+#### Workflow:
 
 **Confidence intervals** are computed using the predict command:
 
@@ -213,7 +212,7 @@ predict(lmheight, newdata = data.frame(age=22.5), interval = "prediction", level
 
 Prediction intervals are always greater than confidence intervals. While they include the uncertainty in the regression coefficients, the slope and intercept, they also includes the unexplained variability in y within the original data.
 
-### Example
+#### Example
 
 ```{r}
 
@@ -251,7 +250,7 @@ p
 
 The resulting plot contains the confidence and prediction intervals over the range of x-values.
 
-# Now, let's say you want to predict a y-value for a given age.
+## Now, let's say you want to predict a y-value for a given age.
 
 When making predictions, you'll want to use predict and not confidence. The rationale is that this approach provides a better sense of incorporating not just the confidence in the intercept and slope, but also the unexplained variation in the y-values.
 
@@ -264,7 +263,7 @@ value.predict
 
 Thus, for an age of 18.1 months, the predicted height is 76.4 (75.77 - 77.1, alpha = 95%).'
 
-# Example 2 from reading
+## Example 2 from reading
 
 
 ```{r example 2}
